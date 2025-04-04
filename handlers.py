@@ -23,7 +23,7 @@ def get_supabase_client() -> Client:
         raise
 
 # Funções para manipulação da tabela requisicoes
-def criar_registro_requisicao(id_projeto, cliente=None, fazenda=None, talhao=None, data_voo=None):
+def criar_registro_requisicao(id_projeto, cliente=None, fazenda=None, talhao=None, data_voo=None, id_talhao=None):
     """
     Cria um registro inicial na tabela requisicoes
     
@@ -33,6 +33,7 @@ def criar_registro_requisicao(id_projeto, cliente=None, fazenda=None, talhao=Non
         fazenda: Nome da fazenda (opcional)
         talhao: Identificação do talhão (opcional)
         data_voo: Data do voo/levantamento (opcional)
+        id_talhao: ID do talhão (opcional)
         
     Returns:
         id: UUID do registro criado
@@ -48,7 +49,8 @@ def criar_registro_requisicao(id_projeto, cliente=None, fazenda=None, talhao=Non
             "fazenda": fazenda,
             "talhao": talhao,
             "data_voo": data_voo,
-            "status_orto": "Processando"  # Status inicial
+            "status_orto": "Processando",  # Status inicial
+            "id_talhao": id_talhao
         }
         
         # Log detalhado para debug
