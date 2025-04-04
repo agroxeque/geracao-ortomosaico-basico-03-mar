@@ -57,13 +57,14 @@ def processar_ortomosaico():
         cliente = dados.get('cliente')
         fazenda = dados.get('fazenda')
         talhao = dados.get('talhao')
+        id_talhao = dados.get('id_talhao') # Novo campo adicionado
         data_voo = dados.get('data_levantamento')  # Nota: campo renomeado conforme requisitos
         
         config.logger.info(f"Iniciando processamento do projeto {id_projeto}")
         
         # Cria registro na tabela requisicoes
         registro_id = handlers.criar_registro_requisicao(
-            id_projeto, cliente, fazenda, talhao, data_voo
+            id_projeto, cliente, fazenda, talhao, data_voo, id_talhao # Passa o novo campo
         )
         
         if not registro_id:
@@ -99,7 +100,7 @@ def processar_projeto(id_projeto, registro_id, dados_requisicao=None):
     Args:
         id_projeto: ID do projeto
         registro_id: ID do registro na tabela requisicoes
-        dados_requisicao: Dados originais da requisição
+        dados_requisicao: Dados originais da requisição (incluindo id_talhao)
     """
     try:
         # 1. Baixar imagens do bucket
@@ -146,8 +147,8 @@ def processar_projeto(id_projeto, registro_id, dados_requisicao=None):
         
         # 5. Gerar apenas o arquivo de metadados TXT
         caminho_metadados = handlers.gerar_metadados(
-            id_projeto, dir_imagens, caminho_ortomosaico, task, 
-            config.ortomosaico_preset, num_imagens, dados_requisicao
+            id_projeto, dir_imagens, caminho_ortomosaico, task,
+            config.ortomosaico_preset, num_imagens, dados_requisicao # dados_requisicao contém id_talhao
         )
         
         if not caminho_metadados:
